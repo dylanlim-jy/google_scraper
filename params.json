@@ -1,0 +1,7 @@
+{
+    "filename"  : "example.csv", 
+    "colname"   : "names", 
+    "regex"     : ".*linkedin\\.co", 
+    "terms"     : ["web developer"],
+    "css"       : ".yuRUbf"
+}
