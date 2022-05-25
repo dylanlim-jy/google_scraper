@@ -19,13 +19,7 @@ Save the file and run the script:
 python3 scrape.py
 ```
 
-To exit the virtual environment:
-
-```
-deactivate
-```
-
-And to reactivate the virtual environment:
+To re-run the script after closing your terminal, `cd` to the `google_scraper` folder on your computer and activate the virtual environment:
 
 ```
 source venv/bin/activate

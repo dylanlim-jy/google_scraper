@@ -2,6 +2,6 @@
     "filename"  : "example.csv", 
     "colname"   : "names", 
     "regex"     : ".*linkedin\\.co", 
-    "terms"     : ["web developer"],
+    "terms"     : ["web developer", "-excludedterm", "\"search must contain this term\""],
     "css"       : ".yuRUbf"
 }
