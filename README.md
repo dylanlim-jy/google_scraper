@@ -1,13 +1,13 @@
 # How to use
 
-Run these commands in your terminal:
+Run these commands in your terminal one line at a time:
 
 ```
 git clone https://github.com/dylanlim-jy/google_scraper
 cd gscraper
-python3 -m pip install --upgrade pip
 python3 -m venv venv
 source venv/bin/activate
+python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 ```
 
