@@ -121,7 +121,7 @@ def google_search():
                     list_of_dicts.append(el)
                     print(r.status_code, r.reason)
                     pprint(el)
-                time.sleep(random.randint(15, 25))
+                time.sleep(random.randint(30, 45))
                 continue
         except:
             break
