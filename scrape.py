@@ -111,7 +111,7 @@ def google_search():
                 
                 # Exit if blocked by Google
                 if r.status_code == 429:
-                    print("Search returned error: {r.status_code} {r.reason} for {term1} {term2}. Terminating loop.")
+                    print(f"Search returned error: {r.status_code} {r.reason} for {term1} {term2}. Terminating loop.")
                     break 
 
                 output = parse(r, css, re.compile(regex))
