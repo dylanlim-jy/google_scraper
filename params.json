@@ -3,5 +3,5 @@
     "colname"   : "names", 
     "regex"     : ".*linkedin\\.co", 
     "terms"     : ["web developer", "-excludedterm", "\"search must contain this term\""],
-    "css"       : ".Ww4FFb"
+    "css"       : ".yuRUbf"
 }
