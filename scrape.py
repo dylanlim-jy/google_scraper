@@ -15,12 +15,14 @@ def user_params():
     """
     json_file = os.path.join(os.getcwd(), 'params.json')
     with open(json_file) as file:
-        data = json.load(file)
-        filename = data['filename']
-        colname = data['colname']
-        regex = data['regex']
-        term_list_2 = data['terms']
-        css = data['css']
+        data            = json.load(file)
+        filename        = data['filename']
+        colname         = data['colname']
+        regex           = data['regex']
+        term_list_2     = data['terms']
+        base_class      = data['base-class']
+        title_class     = data['title']
+        details_class   = data['details']
     
     if not os.path.exists(filename):
         print("The csv file doesn't exist in this directory.")
@@ -33,7 +35,7 @@ def user_params():
         return
     print(f"Initializing gscraper for {len(term_list_1)} rows in {filename} and searching for {term_list_2}")
 
-    return filename, colname, regex, term_list_1, term_list_2, css
+    return filename, colname, regex, term_list_1, term_list_2, base_class, title_class, details_class
 
 
 @timeout(20)
@@ -45,6 +47,7 @@ def search(query):
     Returns:
         response (requests.Response)
     """
+    print(f"Initializing search function for {query}")
     session = HTMLSession()
     response = session.request(
                 'GET',
@@ -53,32 +56,32 @@ def search(query):
                     "user-agent" : 
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
                     })
+    print(f"Successful search for {query}")
     return response
 
 
 @timeout(20)
-def parse(response, result_class, filter, filter_url=True):
+def parse(response, base_class, title_class, details_class, filter, filter_url=True):
     """Parse a requests.Response object and returns a filtered list of dictionaries
 
     Args:
         response (requests.Response) - HTTP response object from Google's search
-        result_class (string) - Class selector of Google's result, eg ".yuRUbf"
+        title_class (string) - Class selector of Google's result, eg ".yuRUbf"
+        details_class (string) - Class selector of Google's span (the second part of information in a search result)
         filter (string) - Regex string to be compiled and matched against
         filter_url (bool) - Switch to decide what to filter on. By default, will filter by URL; else will filter by search result title.
 
     Returns:
         output ([dict])
     """
-    css_title = "h3"
-    css_link = "a"
-    
-    results = response.html.find(result_class)
+    results = response.html.find(base_class)
 
     output = []
-    for result in results:
+    for r in results:
         item = {
-            'title': result.find(css_title, first=True).text,
-            'link': result.find(css_link, first=True).attrs['href']
+            'link'  : r.find(title_class + ' a', first=True).attrs['href'],
+            'title' : r.find(title_class + ' h3', first=True).text,
+            'extra' : r.find(details_class, first=True).full_text
         }
         if filter_url == False:
             if filter.match(item['title']):
@@ -86,7 +89,6 @@ def parse(response, result_class, filter, filter_url=True):
         else: 
             if filter.match(item['link']):
                 output.append(item)
-        
     return output
 
 
@@ -99,7 +101,7 @@ def google_search():
     """
     list_of_dicts = []
     try:
-        filename, colname, regex, term_list_1, term_list_2, css = user_params()
+        filename, colname, regex, term_list_1, term_list_2, base_class, title_class, details_class = user_params()
     except:
         print("Execution failed. Kindly rerun the script with the correct parameters.")
         return
@@ -113,8 +115,8 @@ def google_search():
                 if r.status_code == 429:
                     print(f"Search returned error: {r.status_code} {r.reason} for {term1} {term2}. Terminating loop.")
                     break 
-
-                output = parse(r, css, re.compile(regex))
+                
+                output = parse(r, base_class, title_class, details_class, re.compile(regex))
                 for el in output:
                     el[colname] = term1
                     el['query'] = term2
