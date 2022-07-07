@@ -1,7 +1,9 @@
 {
-    "filename"  : "example.csv", 
-    "colname"   : "names", 
-    "regex"     : ".*linkedin\\.co", 
-    "terms"     : ["web developer", "-excludedterm", "\"search must contain this term\""],
-    "css"       : ".yuRUbf"
+    "filename"      : "example.csv", 
+    "colname"       : "names", 
+    "regex"         : ".*linkedin\\.co", 
+    "terms"         : ["web developer"],
+    "base-class"    : "div.g div.jtfYYd",
+    "title"         : "div.NJo7tc.Z26q7c.uUuwM div.yuRUbf",
+    "details"       : "div.NJo7tc.Z26q7c.uUuwM div.VwiC3b.yXK7lf.MUxGbd.yDYNvb.lyLwlc.lEBKkf"
 }
